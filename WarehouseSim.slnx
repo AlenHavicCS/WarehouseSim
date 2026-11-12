@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WarehouseSim.Control/WarehouseSim.Control.csproj" />
+    <Project Path="src/WarehouseSim.Core/WarehouseSim.Core.csproj" />
+    <Project Path="src/WarehouseSim.Emulator/WarehouseSim.Emulator.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WarehouseSim.Tests/WarehouseSim.Tests.csproj" />
+  </Folder>
+</Solution>
