@@ -5,7 +5,6 @@ namespace WarehouseSim.Tests;
 public class ToteTests
 {
     // TEST 1: Creating a tote with a valid barcode works.
-    // [Fact] marks a method as a test that xUnit will run.
     [Fact]
     public void Constructor_WithValidBarcode_SetsBarcode()
     {
@@ -15,7 +14,6 @@ public class ToteTests
     }
 
     // TEST 2: A blank barcode is rejected.
-    // [Theory] runs the same test once for each [InlineData] value.
     [Theory]
     [InlineData("")]
     [InlineData("   ")]

@@ -11,7 +11,7 @@ public class Tote
     {
         if (string.IsNullOrWhiteSpace(barcode))
         {
-            throw new ArgumentException("Barcode cannot be blank.");
+            throw new ArgumentException("Barcode cannot be blank.", nameof(barcode));
         }
 
         Barcode = barcode;
