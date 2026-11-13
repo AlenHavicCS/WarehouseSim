@@ -5,6 +5,19 @@ public class Conveyor : IEquipment
     public string Id { get; }
     public int Capacity { get; }
     public bool IsRunning {get; private set;}
+    private readonly Queue<Tote> _totes = new();
+    public int ToteCount => _totes.Count;
+    public bool IsFull => ToteCount >= Capacity;
+    public bool TryAddTote(Tote tote)
+    {
+        ArgumentNullException.ThrowIfNull(tote);
+        if (IsFull)
+        {
+            return false;
+        }
+        _totes.Enqueue(tote);
+        return true;
+    }
 
     public void Start()
     {
@@ -29,6 +42,4 @@ public class Conveyor : IEquipment
         Id = id;
         Capacity = capacity;
     }    
-
-
 }

@@ -1,3 +1,5 @@
+using System.Configuration.Assemblies;
+using System.Net.Http.Headers;
 using Newtonsoft.Json.Bson;
 using WarehouseSim.Core;
 using Xunit.Sdk;
@@ -62,4 +64,37 @@ public class ConveyorTests
 
         Assert.True(equipment.IsRunning);
     }
+
+    [Fact]
+    public void TryAddTote_WhenNotFull_ReturnsTrueAndAddsTote()
+    {
+        Conveyor conveyor = new Conveyor("CONV-01", 5);
+        Tote tote = new Tote("T-1");
+
+        bool added = conveyor.TryAddTote(tote);
+
+        Assert.True(added);
+        Assert.Equal(1, conveyor.ToteCount);
+    }
+
+    [Fact]
+    public void TryAddTote_WhenFull_ReturnsFalse()
+    {
+        Conveyor conveyor = new Conveyor("CONV-01", 1);
+        Tote tote = new Tote("T-1");
+
+        bool added = conveyor.TryAddTote(tote);
+
+        Assert.False(added);
+    }
+
+    [Fact]
+    public void TryAddTote_WithNullTote_Throws()
+    {
+        Conveyor conveyor = new Conveyor("CONV-01", 5);
+
+        Assert.Throws<ArgumentException>(() =>  conveyor.TryAddTote(null!));
+    }
+
+
 }
