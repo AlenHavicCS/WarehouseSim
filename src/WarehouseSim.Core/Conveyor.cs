@@ -8,16 +8,6 @@ public class Conveyor : IEquipment
     private readonly Queue<Tote> _totes = new();
     public int ToteCount => _totes.Count;
     public bool IsFull => ToteCount >= Capacity;
-    public bool TryAddTote(Tote tote)
-    {
-        ArgumentNullException.ThrowIfNull(tote);
-        if (IsFull)
-        {
-            return false;
-        }
-        _totes.Enqueue(tote);
-        return true;
-    }
 
     public void Start()
     {
@@ -42,4 +32,27 @@ public class Conveyor : IEquipment
         Id = id;
         Capacity = capacity;
     }    
+
+    public bool TryAddTote(Tote tote)
+    {
+        ArgumentNullException.ThrowIfNull(tote);
+        if (IsFull)
+        {
+            return false;
+        }
+        _totes.Enqueue(tote);
+        return true;
+    }
+
+    public Tote? ReleaseTote()
+    {
+        if (!IsRunning)
+        {
+            return null;
+        }else if(ToteCount == 0)
+        {
+            return null;
+        }
+        return _totes.Dequeue();
+    }
 }

@@ -1,8 +1,4 @@
-using System.Configuration.Assemblies;
-using System.Net.Http.Headers;
-using Newtonsoft.Json.Bson;
 using WarehouseSim.Core;
-using Xunit.Sdk;
 
 namespace WarehouseSim.Tests;
 
@@ -16,6 +12,7 @@ public class ConveyorTests
         Assert.Equal("CONV-01", conveyor.Id);
         Assert.Equal(5, conveyor.Capacity);
     }
+
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
@@ -36,12 +33,16 @@ public class ConveyorTests
     public void NewConveyor_IsNotRunning()
     {
         Conveyor conveyor = new Conveyor("CONV-01", 5);
+        Assert.False(conveyor.IsRunning);
     }
 
     [Fact]
     public void Start_SetsIsRunningToTrue()
     {
         Conveyor conveyor = new Conveyor("CONV-01", 5);
+        conveyor.Start();
+
+        Assert.True(conveyor.IsRunning);
     }
 
     [Fact]
@@ -82,8 +83,9 @@ public class ConveyorTests
     {
         Conveyor conveyor = new Conveyor("CONV-01", 1);
         Tote tote = new Tote("T-1");
-
-        bool added = conveyor.TryAddTote(tote);
+        Tote tote2 = new Tote("T-2");
+        conveyor.TryAddTote(tote);
+        bool added = conveyor.TryAddTote(tote2);
 
         Assert.False(added);
     }
@@ -93,8 +95,44 @@ public class ConveyorTests
     {
         Conveyor conveyor = new Conveyor("CONV-01", 5);
 
-        Assert.Throws<ArgumentException>(() =>  conveyor.TryAddTote(null!));
+        Assert.Throws<ArgumentNullException>(() =>  conveyor.TryAddTote(null!));
     }
 
+    [Fact]
+    public void ReleaseTote_ReturnsTotesInTheOrderTheyEntered()
+    {
+        Conveyor conveyor = new Conveyor("CONV-01", 5);
+        conveyor.Start();
+        conveyor.TryAddTote(new Tote("T-1"));
+        conveyor.TryAddTote(new Tote("T-2"));
 
+        Tote? first = conveyor.ReleaseTote();
+        Tote? second = conveyor.ReleaseTote();
+
+        Assert.Equal("T-1", first?.Barcode);
+        Assert.Equal("T-2", second?.Barcode);
+
+    }
+
+    [Fact]
+    public void ReleaseTote_WhenEmpty_ReturnsNull()
+    {
+        Conveyor conveyor = new Conveyor("CONV-01", 5);
+        conveyor.Start();
+
+        Tote? released = conveyor.ReleaseTote();
+
+        Assert.Null(released);
+    }
+    
+    [Fact]
+    public void ReleaseTote_WhenStopped_ReturnsNullAndKeepsTote()
+    {
+        Conveyor conveyor = new Conveyor("CONV-01", 5);
+        conveyor.TryAddTote(new Tote("T-1"));
+        Tote? released = conveyor.ReleaseTote();
+
+        Assert.Null(released);
+        Assert.Equal(1, conveyor.ToteCount);
+    }
 }
