@@ -1,3 +1,4 @@
+using Newtonsoft.Json.Bson;
 using WarehouseSim.Core;
 using Xunit.Sdk;
 
@@ -50,5 +51,15 @@ public class ConveyorTests
         conveyor.Stop();
 
         Assert.False(conveyor.IsRunning);
+    }
+
+    [Fact]
+    public void Conveyor_CanBeUsedAsIEquipment()
+    {
+        IEquipment equipment = new Conveyor("CONV-01", 5);
+
+        equipment.Start();
+
+        Assert.True(equipment.IsRunning);
     }
 }

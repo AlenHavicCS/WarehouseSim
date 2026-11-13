@@ -1,6 +1,6 @@
 namespace WarehouseSim.Core;
 
-public class Conveyor
+public class Conveyor : IEquipment
 {
     public string Id { get; }
     public int Capacity { get; }
@@ -29,4 +29,6 @@ public class Conveyor
         Id = id;
         Capacity = capacity;
     }    
+
+
 }
