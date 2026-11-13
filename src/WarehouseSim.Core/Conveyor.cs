@@ -4,6 +4,17 @@ public class Conveyor
 {
     public string Id { get; }
     public int Capacity { get; }
+    public bool IsRunning {get; private set;}
+
+    public void Start()
+    {
+        IsRunning = true;
+    }
+
+    public void Stop()
+    {
+        IsRunning = false;
+    }
 
     public Conveyor(string id, int capacity)
     {
@@ -17,6 +28,5 @@ public class Conveyor
         }
         Id = id;
         Capacity = capacity;
-    }
-    
+    }    
 }

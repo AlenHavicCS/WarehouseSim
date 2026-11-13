@@ -28,4 +28,27 @@ public class ConveyorTests
     {
         Assert.Throws<ArgumentException>(() => new Conveyor("CONV-01", badCapacity));
     }
+
+    [Fact]
+    public void NewConveyor_IsNotRunning()
+    {
+        Conveyor conveyor = new Conveyor("CONV-01", 5);
+    }
+
+    [Fact]
+    public void Start_SetsIsRunningToTrue()
+    {
+        Conveyor conveyor = new Conveyor("CONV-01", 5);
+    }
+
+    [Fact]
+    public void Stop_AfterStart_SetsIsRunningToFalse()
+    {
+        Conveyor conveyor = new Conveyor("CONV-01", 5);
+        conveyor.Start();
+
+        conveyor.Stop();
+
+        Assert.False(conveyor.IsRunning);
+    }
 }
