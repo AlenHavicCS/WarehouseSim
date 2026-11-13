@@ -1,4 +1,5 @@
 using WarehouseSim.Core;
+using Xunit.Sdk;
 
 namespace WarehouseSim.Tests;
 
@@ -18,5 +19,13 @@ public class ConveyorTests
     public void Constructor_WithBlankID_ThrowsArgumentException(string badId)
     {
         Assert.Throws<ArgumentException>(() => new Conveyor(badId, 5));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void Constructor_WithCapacityBelowOne_Throws(int badCapacity)
+    {
+        Assert.Throws<ArgumentException>(() => new Conveyor("CONV-01", badCapacity));
     }
 }

@@ -11,7 +11,12 @@ public class Conveyor
         {
             throw new ArgumentException("Conveyor ID cannot be blank.", nameof(id));
         }
+        if(capacity < 1)
+        {
+            throw new ArgumentException("Capacity must be at least 1.", nameof(capacity));
+        }
         Id = id;
         Capacity = capacity;
     }
+    
 }
